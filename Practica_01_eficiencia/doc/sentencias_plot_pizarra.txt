@@ -1,0 +1,39 @@
+
+
+
+gnuplot
+
+set terminal jpeg
+set output "p1.jpg"
+
+plot "tiempos_busqueda.dat" with lines, title "Busqueda_lineal"
+
+
+f(x) = a*x+b  // o f(x) = a*x**2+b*x+c
+fit f(x) "tiempos_busqueda.dat" via a,b
+
+plot "tiempos_busqueda.dat", f(x)
+
+
+
+gnuplot -e "set terminal canvas; set output \"p1.jpg\"; plot \"tiempos_busqueda.dat\" with lines"
+
+
+
+a*x**3 + b*x**2 + c*x + d
+y al hacer fit pones via a,b,c,d
+
+
+
+
+f(x) = a*x**2 + b*x + c
+fit f(x) "tiempos_ordenacion.dat" via a,b,c
+
+plot "tiempos_ordenacion.dat", f(x)
+
+
+
+
+
+a*x**3 + b*x**2 + c*x + d
+y al hacer fit pones via a,b,c,d

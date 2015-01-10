@@ -4,8 +4,11 @@
 *.o
 *.obj
 
+<<<<<<< HEAD
 *.class
 
+=======
+>>>>>>> f86758b4f85de79887a6ec048c1c8a72feb9d9bf
 # Precompiled Headers
 *.gch
 *.pch
@@ -28,6 +31,7 @@
 *.exe
 *.out
 *.app
+<<<<<<< HEAD
 
 # Ficheros de Mac
 .DS_Store
@@ -39,3 +43,5 @@
 
 # otras cosas
 Practica_00_skeleton/
+=======
+>>>>>>> f86758b4f85de79887a6ec048c1c8a72feb9d9bf

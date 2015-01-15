@@ -13,7 +13,13 @@
 #ifndef __Diccionario_h__
 #define __Diccionario_h__
 
+#include <string>
 #include "ArbolGeneral.h"
+#include "tree.h"
+// #include "tree.hh"
+// #include "tree_util.hh" // Funciones para pintar arboles
+
+using namespace std;
 
  struct info
  {
@@ -25,6 +31,13 @@
 		final=false;
 	}
 	info(char car, bool f) : c(car), final(f) {}
+
+	friend ostream & operator<<(ostream & os, const info &i)
+	{
+		os << i.c;
+
+		return os;
+	}
 };
 
 class Diccionario
@@ -32,7 +45,8 @@ class Diccionario
 
 private:
 
-	ArbolGeneral<info> datos;
+	// ArbolGeneral<info> datos;
+	tree<info> datos;
 
 public:
 
@@ -80,6 +94,7 @@ public:
 	{
 	private:
 		ArbolGeneral<info>::iter_preorden it;
+		//tree<info>::iter_preorden it;
 		string cad; //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
 	public:
 

@@ -37,6 +37,28 @@ void ArbolGeneral<T>::insertar(vector<T> & v)
 
 }
 
+template <class T>
+void ArbolGeneral<T>::ListarPreorden(nodo *t)
+{
+
+  if (t!=0)
+  {
+
+    cout << t->etiqueta;
+    for (nodo *aux=t->izqda; aux!=0; aux=aux->drcha)
+      ListarPreorden(aux);
+
+  }
+
+
+}
+
+// void ListarInorden(nodo *t)
+// {
+
+//   if ()
+
+// }
 
 /*____________________________________________________________ */
 /*____________________________________________________________ */
@@ -67,9 +89,11 @@ void ArbolGeneral<T>::copiar(nodo * & dest, nodo * orig){
     if (dest->izqda != 0)             //Si hay hijo izquierda,
       dest->izqda->padre = dest;      //actualizamos su padre
     if (dest->drcha != 0)             //Si hay hijo derecha,
-      dest->drcha->padre = dest;      //actualizamos su padre
+      // dest->drcha->padre = dest;      //actualizamos su padre
+      dest->drcha->padre = dest-padre; // MARTA
   }
 }
+
 
 /*____________________________________________________________ */
 
@@ -266,6 +290,21 @@ void ArbolGeneral<T>::asignar_subarbol(const ArbolGeneral<T>& orig,
 }
 
 
+
+// CeldaArbol * podar_hijomasizquierda(CeldaArbol *T CeldaArbol *n)
+// {
+//   CeldaArbol * Res = 0;
+//   if (n->hizqda!=0)
+//   {
+//     Res = n->hizqda;
+//     n->hizqda = Res->hermderecha;
+//     Res->padre = Res->hermderecha=0;
+//   }
+//   return Res
+// }
+
+
+
 /*____________________________________________________________ */
 
 template <class T>
@@ -279,6 +318,21 @@ void ArbolGeneral<T>::podar_hijomasizquierda(Nodo n, ArbolGeneral<T>& dest){
   }
 }
 
+
+// CeldaArbol * podar_hermanoderecha(CeldaArbol *T CeldaArbol *n)
+// {
+//   CeldaArbol * Res = 0;
+
+//   if (n->hermderecha!=0)
+//   {
+
+//     Res = n->hermderecha;
+//     n->hermderecha = Res->hermderecha;
+//     Res->padre = Res->hermderecha=0;
+
+//   }
+//   return Res;
+// }
 
 /*____________________________________________________________ */
 
@@ -308,6 +362,21 @@ void ArbolGeneral<T>::podar_hermanoderecha(Nodo n, ArbolGeneral<T>& dest){
 // }
 
 
+// insertar_hijomasizquierda(CeldaArbol *T1, CeldaArbol *n, CeldaArbol *& T2)
+// {
+
+//   if (T2!=0)
+//   {
+//     T2->hermderecha = n->hizqda;
+//     T2->padre = n;
+//     n->hizqda = T2;
+//     T2=0; // Dejamos T2 vacio
+
+//   }
+
+// }
+
+
 template <class T>
 void ArbolGeneral<T>::insertar_hijomasizquierda(Nodo n, ArbolGeneral<T>& rama){
   assert(n!=0);             //El nodo no debe ser nulo
@@ -318,8 +387,32 @@ void ArbolGeneral<T>::insertar_hijomasizquierda(Nodo n, ArbolGeneral<T>& rama){
     rama.laraiz=0;          //y actualizamos la raíz en rama
   }
 
+  rama->drcha = n->izqda;
+  rama->padre = n;
+  n->izqda=rama;
+  rama=0;   // ponemos t2 a cero pues ya lo hemos insertado en el
+            // arbol, si lo destruimos, destruimos tambien lo que
+            // hemos insertado en el arbol
 
 
+
+
+
+
+
+template <class T>
+  void InsertarHijoIzquierda (info_nodo<T>* n, info_nodo<T>* &t2) {
+// El hijo a la izquierda de n pasar´ıa a ser el hermano a la derecha
+// de t2
+    if (t2 != 0) {
+      t2->hermanodcha = n->hijoizq;
+      t2->padre=n;
+      n->hijoizq=t2;
+      t2=0; // ponemos t2 a cero pues ya lo hemos insertado en el
+            // arbol, si lo destruimos, destruimos tambien lo que
+            // hemos insertado en el arbol
+    }
+}
 
   // if (!rama.empty()){
   //   typename ArbolGeneral<T>::Nodo nuevo(*(rama.laraiz));
@@ -347,6 +440,27 @@ void ArbolGeneral<T>::insertar_hijomasizquierda(Nodo n, ArbolGeneral<T>& rama){
 
 
 }
+
+
+
+
+
+
+
+// insertar_hermanoderecha(CeldaArbol *T1, CeldaArbol *n, CeldaArbol *& T2)
+// {
+
+//   if (T2!=0)
+//   {
+//     T2->hermderecha = n->hermderecha;
+//     T2->padre = n->padre;
+//     n->hermderecha = T2;
+//     T2=0; // Dejamos T2 vacio
+
+//   }
+
+// }
+
 
 /*____________________________________________________________ */
 
@@ -477,17 +591,25 @@ ArbolGeneral<T>::iter_preorden::iter_preorden(ArbolGeneral<T>::Nodo n)
    {
 
     if (it==0)
-    return *this;
+      return *this;
 
     if (it->izqda != 0)
+    {
       it = it->izqda;
+      level++; // Incrementamos el nivel
+    }
     else if (it->drcha != 0)
+    {
       it = it->drcha;
+    }
     else
     {
 
       while ( (it->padre != 0) && (it->padre->drcha == it || it->padre->drcha == 0))
+      {
         it = it->padre;
+        level--; // Decrementamos el nivel
+      }
 
 
       if (it->padre == 0)

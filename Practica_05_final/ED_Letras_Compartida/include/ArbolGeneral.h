@@ -24,13 +24,13 @@ using namespace std;
 
    \b Definición:
    Una instancia \e a del tipo de dato abstracto ArbolGeneral sobre un dominio
-   \e Tbase se puede construir como
+   \e T se puede construir como
 
    - Un objeto vacío (árbol vacío) si no contiene ningún elemento.
    Lo denotamos {}.
    - Un árbol que contiene un elemento destacado, el nodo raíz, con un valor
-   \e e en el dominio \e Tbase (denominado \e etiqueta), y \e k subárboles
-   \f$(T_1, \ldots, T_k)\f$ del T.D.A. ArbolGeneral sobre \e Tbase.
+   \e e en el dominio \e T (denominado \e etiqueta), y \e k subárboles
+   \f$(T_1, \ldots, T_k)\f$ del T.D.A. ArbolGeneral sobre \e T.
 
    Se establece una relación \e padre-hijomasalaizquierda-hermanoaladerecha
    entre cada nodo y los nodos raíz  de los subárboles (si los hubiera) que
@@ -47,7 +47,7 @@ using namespace std;
    @date
 */
 
-template <class Tbase>
+template <class T>
 class ArbolGeneral
 {
 /**
@@ -70,13 +70,14 @@ class ArbolGeneral
       * implementa como un conjunto de nodos enlazados según la relación
       * padre-hijo más a la izquierda-hermano derecha.
       */
-    struct nodo {
+    struct nodo
+    {
       /**
         *@brief Elemento almacenado
         *
         * En este campo se almacena la etiqueta que corresponde a este nodo.
         */
-      Tbase etiqueta;
+      T etiqueta;
 
       /**
         * @brief Puntero al hijo más a la izquierda
@@ -107,7 +108,7 @@ class ArbolGeneral
       * @brief Puntero a la raíz.
       *
       * Este miembro es un puntero al primer nodo, que corresponde a la raíz
-      * del árbol. Vale 0 si el árbol es vacío.
+      * del árbol. Vale 0 sin el árbol es vacío.
       */
     struct nodo *laraiz;
 
@@ -214,7 +215,7 @@ class ArbolGeneral
       * tiene la etiqueta \e e, es decir, el árbol {e, {}, {}}. La operación
       * se realiza en tiempo O(1).
       */
-    ArbolGeneral(const Tbase& e);
+    ArbolGeneral(const T& e);
 
     /**
       * @brief Constructor de copias
@@ -225,7 +226,7 @@ class ArbolGeneral
       * La operación se realiza en tiempo O(n), donde \e n es el número
       * de elementos de \e v.
       */
-    ArbolGeneral (const ArbolGeneral<Tbase>& v);
+    ArbolGeneral (const ArbolGeneral<T>& v);
 
     /**
       * @brief Destructor
@@ -246,7 +247,7 @@ class ArbolGeneral
       * La operación se realiza en tiempo O(n), donde \e n es el número de
       * elementos de \e v.
       */
-    ArbolGeneral<Tbase>& operator = (const ArbolGeneral<Tbase> &v);
+    ArbolGeneral<T>& operator = (const ArbolGeneral<T> &v);
 
     /**
       * @brief Asignar nodo raíz
@@ -255,7 +256,7 @@ class ArbolGeneral
       * Vacía el árbol receptor y le asigna como valor el árbol de un único
       * nodo cuya etiqueta es \e e.
       */
-    void AsignaRaiz(const Tbase& e);
+    void AsignaRaiz(const T& e);
 
     /**
       * @brief Raíz del árbol
@@ -311,7 +312,7 @@ class ArbolGeneral
       * modificiar o usar el valor.
       * La operación se realiza en tiempo O(1).
       */
-    Tbase& etiqueta(const Nodo n);
+    T& etiqueta(const Nodo n);
 
     /**
       * @brief Etiqueta de un nodo
@@ -323,7 +324,7 @@ class ArbolGeneral
       * tanto no se puede modificiar el valor.
       * La operación se realiza en tiempo O(1).
       */
-    const Tbase& etiqueta(const Nodo n) const;
+    const T& etiqueta(const Nodo n) const;
 
     /**
       * @brief Copia subárbol
@@ -335,7 +336,7 @@ class ArbolGeneral
       * nodo \e nod en el árbol \e orig. La operación se realiza en tiempo
       * O(n), donde \e n es el número de nodos del subárbol copiado.
       */
-    void asignar_subarbol(const ArbolGeneral<Tbase>& orig, const Nodo nod);
+    void asignar_subarbol(const ArbolGeneral<T>& orig, const Nodo nod);
 
     /**
       * @brief Podar subárbol hijo más a la izquierda
@@ -348,7 +349,7 @@ class ArbolGeneral
       * sin dichos nodos.
       *  La operación se realiza en tiempo O(1).
       */
-    void podar_hijomasizquierda(Nodo n, ArbolGeneral<Tbase>& dest);
+    void podar_hijomasizquierda(Nodo n, ArbolGeneral<T>& dest);
 
     /**
       * @brief Podar subárbol hermano derecha
@@ -361,7 +362,7 @@ class ArbolGeneral
       * queda sin dichos nodos.
       * La operación se realiza en tiempo O(1).
       */
-    void podar_hermanoderecha(Nodo n, ArbolGeneral<Tbase>& dest);
+    void podar_hermanoderecha(Nodo n, ArbolGeneral<T>& dest);
 
     /**
       * @brief Insertar subárbol hijo más a la izquierda
@@ -376,7 +377,7 @@ class ArbolGeneral
       * la derecha, de forma que el anterior hijo más a la izquierda pasa a ser
       * el hermano a la derecha del nuevo hijo más a la izquierda.
       */
-    void insertar_hijomasizquierda(Nodo n, ArbolGeneral<Tbase>& rama);
+    void insertar_hijomasizquierda(Nodo n, ArbolGeneral<T>& rama);
 
     /**
       * @brief Insertar subárbol hermano derecha
@@ -389,9 +390,9 @@ class ArbolGeneral
       * árbol receptor. El árbol \e rama queda vacío y los nodos que estaban a
       * la derecha del nodo \e n pasan a la derecha del nuevo nodo.
       */
-    void insertar_hermanoderecha(Nodo n, ArbolGeneral<Tbase>& rama);
+    void insertar_hermanoderecha(Nodo n, ArbolGeneral<T>& rama);
 
-    void insertar(vector<Tbase> & v);
+    void insertar(vector<T> & v);
 
     /**
       * @brief Borra todos los elementos
@@ -429,7 +430,7 @@ class ArbolGeneral
       * La operación se realiza en tiempo O(n).
       * @see soniguales
       */
-    bool operator == (const ArbolGeneral<Tbase>& v) const;
+    bool operator == (const ArbolGeneral<T>& v) const;
 
     /**
       * @brief Operador de comparación (diferencia)
@@ -439,7 +440,7 @@ class ArbolGeneral
       *
       * La operación se realiza en tiempo O(n).
       */
-    bool operator != (const ArbolGeneral<Tbase>& v) const;
+    bool operator != (const ArbolGeneral<T>& v) const;
 
     /**
       * @brief Operador de extracción de flujo
@@ -451,8 +452,8 @@ class ArbolGeneral
       * la lectura se puede consultar en la función de salida.
       * @see lee_arbol
       */
-    template<class T>
-    friend std::istream& operator>>(std::istream& in, ArbolGeneral<T>& v);
+    template<class Tbase>
+    friend std::istream& operator>>(std::istream& in, ArbolGeneral<Tbase>& v);
     /**
       * @brief Operador de inserción en flujo
       * @param out Stream de salida
@@ -468,8 +469,8 @@ class ArbolGeneral
       *
       * @see escribe_arbol
       */
-    template<class T>
-    friend std::ostream& operator<< (std::ostream& out, const ArbolGeneral<T>& v);
+    template<class Tbase>
+    friend std::ostream& operator<< (std::ostream& out, const ArbolGeneral<Tbase>& v);
 
 
 
@@ -483,7 +484,7 @@ class ArbolGeneral
 
        Nodo it; ///<Puntero al nodo
        Nodo raiz; ///<Puntero a la raiz del arbol donde esta it
-	   int level; ///< altura del nodo
+	     int level; ///< altura del nodo
 
     public:
 
@@ -493,12 +494,23 @@ class ArbolGeneral
 	  * */
 	 iter_preorden();
 
+
+   /**
+    * @brief Constructor de copia
+    * @details [long description]
+    *
+    * @param it [description]
+    */
+   iter_preorden(const iter_preorden & i);
+
+   iter_preorden(Nodo n);
+
 	 /**
 	  * @brief Obtiene la etiqueta del nodo
 	  *
 	  * */
 
-	 Tbase & operator*();
+	 T & operator*();
 
 
 	 /**
@@ -535,12 +547,16 @@ class ArbolGeneral
 	   friend class ArbolGeneral;
     };
 
-    class const_iter_preorden{
-       private:
-	  const nodo * it;
-	  const nodo * raiz;
-	 int level;
-       public:
+    class const_iter_preorden
+    {
+
+    private:
+
+       const Nodo * it;
+	     const Nodo * raiz;
+	     int level;
+
+    public:
 	 /**
 	  * @brief Constructor por defecto
 	  *
@@ -552,7 +568,7 @@ class ArbolGeneral
 	  *
 	  * */
 
-	 const Tbase & operator*();
+	 const T & operator*();
 
 
 	 /**

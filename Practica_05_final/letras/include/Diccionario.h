@@ -15,7 +15,7 @@
 
 #include <string>
 #include "ArbolGeneral.h"
-#include "tree.h"
+// #include "tree.h"
 // #include "tree.hh"
 // #include "tree_util.hh" // Funciones para pintar arboles
 
@@ -45,8 +45,8 @@ class Diccionario
 
 private:
 
-	// ArbolGeneral<info> datos;
-	tree<info> datos;
+	ArbolGeneral<info> datos;
+	//tree<info> datos;
 
 public:
 

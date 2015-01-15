@@ -35,7 +35,7 @@ CPPFLAGS = -Wall -g -c
 endif
 
 # Colección de objetos a compilar
-OBJECTS = testdiccionario testarbol
+OBJECTS = testconjuntoletras letras #testletras # testdiccionario testarbol
 
 # TODO (sin empaquetado)
 all: clean $(OBJECTS)

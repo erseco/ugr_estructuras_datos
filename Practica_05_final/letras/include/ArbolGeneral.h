@@ -50,6 +50,9 @@ using namespace std;
 template <class T>
 class ArbolGeneral
 {
+
+
+
 /**
   * @page repConjunto Rep del TDA Arbol General
   *
@@ -178,6 +181,11 @@ class ArbolGeneral
     void lee_arbol(std::istream& in, nodo *& nod);
 
   public:
+
+public:
+
+  void ListarPreorden(nodo *t); //BORRAR
+
     /**
       * @brief Tipo Nodo
       *

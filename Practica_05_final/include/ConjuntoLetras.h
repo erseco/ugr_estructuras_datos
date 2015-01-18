@@ -57,15 +57,18 @@ public:
     int puntuacion(string palabra)
     {
     	int puntos = 0;
-
     	for (int i=0;i<palabra.size(); i++)
     	{
     		bool salir = false;
     		set<Letra>::iterator it = abecedario.begin();
     		for (; !salir && it!=abecedario.end(); ++it )
     		{
-				puntos  +=  it->getPuntos();
-				salir = true;
+    			Letra l = *it;
+    			if (palabra[i] == tolower(*l))
+    			{
+					puntos  +=  it->getPuntos();
+					salir = true;
+	    		}
     		}
 
     	}

@@ -242,7 +242,7 @@ int main(int argc, char * argv[])
 			}
 		}
 
-		if (encontradas.size() > 0)
+		if (!encontradas.empty())
 		{
 
 			set<string>::iterator it = encontradas.begin();

@@ -4,11 +4,8 @@
 *.o
 *.obj
 
-<<<<<<< HEAD
 *.class
 
-=======
->>>>>>> f86758b4f85de79887a6ec048c1c8a72feb9d9bf
 # Precompiled Headers
 *.gch
 *.pch
@@ -43,5 +40,4 @@
 
 # otras cosas
 Practica_00_skeleton/
-=======
->>>>>>> f86758b4f85de79887a6ec048c1c8a72feb9d9bf
+ED_Letras_Compartida/

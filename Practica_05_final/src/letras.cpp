@@ -30,6 +30,24 @@
 
 using namespace std;
 
+struct MyStringLengthCompare
+{
+    bool operator () (const std::string & p_lhs, const std::string & p_rhs)
+    {
+        const size_t lhsLength = p_lhs.length() ;
+        const size_t rhsLength = p_rhs.length() ;
+
+        if(lhsLength == rhsLength)
+        {
+            return (p_lhs > p_rhs) ; // when two strings have the same
+                                     // length, defaults to the normal
+                                     // string comparison
+        }
+
+        return (lhsLength > rhsLength) ; // compares with the length
+    }
+} ;
+
 int main(int argc, char * argv[])
 {
 	if (argc!=5)
@@ -94,6 +112,23 @@ int main(int argc, char * argv[])
 		}
 		cout << endl;
 
+
+		// letras.clear();
+
+		// Letra l_a('A', 12, 1);
+		// Letra l_d('D', 5, 2);
+		// Letra l_t('T', 4, 1);
+		// Letra l_n('N', 5, 1);
+
+		// cout << "FIJO: \tA\tD\tT\tN no encuentra 'ta'" << endl;
+
+		// letras.push_back(l_a);
+		// letras.push_back(l_d);
+		// letras.push_back(l_t);
+		// letras.push_back(l_n);
+
+
+
 		string palabra;
 		for (int i=0; i<letras.size(); i++)
 		{
@@ -148,7 +183,7 @@ int main(int argc, char * argv[])
 
 
 
-
+		set<string, MyStringLengthCompare> encontradas;
 
 		cout << "Mis soluciones son:" << endl;
 		bool alguna = false;
@@ -163,19 +198,65 @@ int main(int argc, char * argv[])
 
 				string palabra_vector = *it;
 
-
+				sort(palabra.begin(), palabra.end());
 				sort(palabra_vector.begin(), palabra_vector.end());
 
 
-				if(palabra.substr(0, palabra_vector.size()) == palabra_vector)
-				{
-					alguna = true;
-					cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;;
-				}
+				// if(palabra.substr(0, palabra_vector.size()) == palabra_vector)
+				// {
+				// 	alguna = true;
+				// 	//cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
+				// 	cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
+
+
+
+				// }
+				// // else if ((*it).size() == 2)
+				// // {
+				// // 	cout << RED << *it << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
+				// // }
+				// else
+				// {
+					do
+					{
+
+
+						if(palabra.substr(0, palabra_vector.size()) == palabra_vector)
+						{
+							alguna = true;
+							//cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
+							// cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
+
+
+							encontradas.insert(*it);
+
+
+						}
+
+
+				  	} while (next_permutation(palabra.begin(), palabra.end()) );
+
+				// }
+
+
 			}
 		}
-		if (!alguna)
+
+		if (encontradas.size() > 0)
+		{
+
+			set<string>::iterator it = encontradas.begin();
+			for (;it!=encontradas.end();++it)
+				cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
+
+
+
+		}
+		else
 			cout << RED <<"No se encontró ninguna palabra con esas letras" << BLACK << endl;
+
+		// if (!alguna)
+		// 	cout << RED <<"No se encontró ninguna palabra con esas letras" << BLACK << endl;
 		// FIN DE LA BUSQUEDA DE LETRAS
 
 

@@ -27,6 +27,9 @@
 #include "Diccionario.h"
 #include "ConjuntoLetras.h"
 #include "BolsaLetras.h"
+#include "Color.h" // definiciones de colores ansi
+#include "Resultado.h"
+
 
 using namespace std;
 
@@ -186,7 +189,8 @@ int main(int argc, char * argv[])
 
 		// BUSCAMOS LAS LETRAS
 
-		set<string, MyStringLengthCompare> encontradas;
+		vector<Resultado> encontradas;
+		// set<string, MyStringLengthCompare> encontradas;
 
 		cout << "Mis soluciones son:" << endl;
 
@@ -200,21 +204,61 @@ int main(int argc, char * argv[])
 
 				string palabra_vector = *it;
 
-				bool salir = false;
-				do
+				vector<bool> letras_usadas;
+				for (int b=0; b<letras.size(); b++)
+				{
+					letras_usadas.push_back(false); // Agregamos tantas variables como letras hayan
+				}
+
+
+
+				int cont_usadas = 0;
+				for (int l_actual =0; l_actual<palabra_vector.size(); l_actual++)
 				{
 
-					if (palabra.compare(0,palabra_vector.size(), palabra_vector) == 0)
-					// if(palabra.substr(0, palabra_vector.size()) == palabra_vector)
+					bool salir2 = false;
+					char letra_actual = palabra_vector[l_actual];
+
+					for (int l_orig=0; !salir2 && l_orig<palabra.size(); l_orig++)
 					{
-						//cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
-						// cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
-						encontradas.insert(*it);
-						salir = true;
+
+						if (!letras_usadas[l_orig] && palabra[l_orig] == letra_actual)
+						{
+							letras_usadas[l_orig] = true;
+							salir2 = true;
+							cont_usadas++;
+						}
+
+
 					}
 
 
-			  	} while (!salir && next_permutation(palabra.begin(), palabra.end()) );
+
+
+
+				}
+				if (cont_usadas == palabra_vector.size())
+					encontradas.push_back(Resultado(palabra_vector,conjunto.puntuacion(palabra_vector) ));
+
+
+
+
+
+				// bool salir = false;
+				// do
+				// {
+
+				// 	if (palabra.compare(0,palabra_vector.size(), palabra_vector) == 0)
+				// 	// if(palabra.substr(0, palabra_vector.size()) == palabra_vector)
+				// 	{
+				// 		//cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
+				// 		// cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
+				// 		encontradas.insert(*it);
+				// 		salir = true;
+				// 	}
+
+
+			 //  	} while (!salir && next_permutation(palabra.begin(), palabra.end()) );
 
 
 
@@ -224,9 +268,27 @@ int main(int argc, char * argv[])
 		if (!encontradas.empty())
 		{
 
-			set<string>::iterator it = encontradas.begin();
-			for (;it!=encontradas.end();++it)
-				cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
+			if (strcmp(argv[4], "L") == 0)
+			{
+				// Modo longitud
+				sort(encontradas.begin(), encontradas.end(), Resultado::cmp_pal());
+
+			}
+			else if (strcmp(argv[4], "P") == 0)
+			{
+				// Modo puntos
+				sort(encontradas.begin(), encontradas.end(), Resultado::cmp_pts());
+			}
+			else
+			{
+				// Modo incorrecto
+				cout<<"Error: El modo es incorrecto, debe ser L o P"<<endl;
+				return 0;
+			}
+
+			for (vector<Resultado>::iterator it = encontradas.begin(); it!=encontradas.end(); ++it)
+				cout << GREEN << *it << BLACK << endl;
+
 
 		}
 		else
@@ -235,20 +297,7 @@ int main(int argc, char * argv[])
 		// FIN DE LA BUSQUEDA DE LETRAS
 
 
-		if (strcmp(argv[4], "L") == 0)
-		{
-			// Modo longitud
-		}
-		else if (strcmp(argv[4], "P") == 0)
-		{
-			// Modo puntos
-		}
-		else
-		{
-			// Modo incorrecto
-			cout<<"Error: El modo es incorrecto, debe ser L o P"<<endl;
-			return 0;
-		}
+
 
 
 		cout << "¿Quieres seguir jugando[S/N]?";

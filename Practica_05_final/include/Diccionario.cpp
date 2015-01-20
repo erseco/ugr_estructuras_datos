@@ -22,13 +22,10 @@ int Diccionario::getApariciones(const char c)
 {
 	int apariciones = 0;
 
-	ArbolGeneral<info>::iter_preorden it;
-
 	// Recorremos todo el arbol...
-	for (it = datos.begin(); it!=datos.end(); ++it)
+	for (ArbolGeneral<info>::iter_preorden it = datos.begin(); it!=datos.end(); ++it)
 	{
 		char c_tree = (*it).c; // Caracter actual del arbol
-		// cout << c_tree << " - " << tolower(c) << endl;
 
 		// ...buscando el caracter
 		if (c_tree == tolower(c))
@@ -42,33 +39,12 @@ vector<string> Diccionario::PalabrasLongitud(int longitud)
 {
 	vector<string> palabras;
 
-
-
-	// ArbolGeneral<info>::iter_preorden it;
-
-	// for (it = datos.begin(); it!=datos.end(); ++it)
-	// {
-	// 	cout << "Letra: " << (*it).c << " nivel: " << it.getlevel() << endl;
-	// }
-
-
-
-	iterator it_dic = begin();
-
-	for (it_dic = begin(); it_dic != end(); ++it_dic)
+	for (iterator it_dic = begin(); it_dic != end(); ++it_dic)
 	{
-
-		string palabra = *it_dic;
-
-		if (palabra.size() == longitud)
-			palabras.push_back(palabra);
-
-		// cout << "plabra: " << *it_dic << endl;
+		if ((*it_dic).size() == longitud)
+			palabras.push_back(*it_dic);
 
 	}
-
-
-
 
 	return palabras;
 
@@ -166,7 +142,7 @@ void Diccionario::insertar_cadena( string palabra, int i, ArbolGeneral<info>::No
 
 	ArbolGeneral<info>::Nodo p,nuevo_nodo;
 	info x;
-	int salir = 0;
+
 
 	if (i == palabra.size()) // Si es la siguiente a la última letra...
 	{
@@ -175,12 +151,13 @@ void Diccionario::insertar_cadena( string palabra, int i, ArbolGeneral<info>::No
 	}
 	else
 	{
+		bool salir = false;
 		p= datos.hijomasizquierda(n);
 		while ( p!=0 && !salir)
 		{
 			x = datos.etiqueta(p);
 			if (x.c == palabra[i])
-				salir = 1;
+				salir = true;
 			else
 				p=datos.hermanoderecha(p);
 		}
@@ -203,8 +180,6 @@ void Diccionario::insertar_cadena( string palabra, int i, ArbolGeneral<info>::No
 
 			// Obtenemos el nodo recien insertado
 			nuevo_nodo = datos.hijomasizquierda(n);
-
-			// cout << "N:" <<datos.etiqueta(n).c << "NUEVO:" << datos.etiqueta(nuevo_nodo).c << endl;
 
 			insertar_cadena(palabra,++i,nuevo_nodo);
 		}

@@ -44,23 +44,6 @@ public:
 		return bolsa.size();
 	}
 
-	// string operator*()
-	// {
-	// 	string resultado;
-
-	// 	multiset<Letra>::iterator it = bolsa.begin();
-	// 	for (; it!=bolsa.end(); ++it)
-	// 	{
-	// 		char letra = *(*it);
-	// 		resultado.push_back(letra);
-	// 	}
-	// 	return resultado;
-
-
-
-
-	// }
-
 	/**
 	 * @brief Obtiene una letra en base a su posicion
 	 *

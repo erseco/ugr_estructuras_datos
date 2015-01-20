@@ -1,14 +1,24 @@
+/******************************************************************************
+ *
+ * ED - Estructura de Datos
+ * Grado en Ingeniería Informática
+ *
+ * 2014 - Ernesto Serrano <erseco@correo.ugr.es>
+ * ---------------------------------------------
+ *
+ *  Este programa comprueba que funcione bien la clase diccionario
+ *
+ ******************************************************************************/
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 #include "Diccionario.h"
 
-
-int main(int argc, char * argv[]){
+int main(int argc, char * argv[])
+{
 	if (argc!=2)
 	{
-
 		cout<<"Los parametros son:"<<endl;
 		cout<<"1.- El fichero con las palabras";
 
@@ -27,7 +37,6 @@ int main(int argc, char * argv[]){
 
 	cout<<"Dime la longitud de las palabras que quieres ver" << endl;
 	cin>>longitud;
-	// longitud = 1;
 	vector<string> v=D.PalabrasLongitud(longitud);
 
 	cout<<"Palabras de Longitud "<<longitud<<endl;

@@ -6,25 +6,11 @@
  * 2014 - Ernesto Serrano <erseco@correo.ugr.es>
  * ---------------------------------------------
  *
- *  Implementación del T.D.A Arbol Genral
+ *  Implementación del T.D.A Arbol General
+ *
+ *  NOTA: Este código está  basado en el arbol binario del Prof. Valdivia
  *
  ******************************************************************************/
-
-template <class T>
-void ArbolGeneral<T>::ListarPreorden(nodo *t)
-{
-
-	if (t!=0)
-	{
-
-		cout << t->etiqueta;
-		for (nodo *aux=t->izqda; aux!=0; aux=aux->drcha)
-			ListarPreorden(aux);
-
-	}
-
-
-}
 
 /*____________________________________________________________ */
 /*____________________________________________________________ */
@@ -51,8 +37,6 @@ void ArbolGeneral<T>::copiar(nodo * & dest, nodo * orig)
 		dest = 0;
 	else
 	{                               //Si no es el nodo nulo,
-
-		// cout << orig->etiqueta << endl;
 
 		dest = new nodo;                  //Reservamos el nodo destino
 		dest->etiqueta = orig->etiqueta;  //Copiamos la etiqueta
@@ -152,7 +136,6 @@ void ArbolGeneral<T>::escribe_arbol(std::ostream& out, nodo * nod) const{
 template <class T>
 inline ArbolGeneral<T>::ArbolGeneral(){
 	laraiz = 0;  //El constructor por defecto crea un árbol vacío
-	//cout << "AQUI ()!!" << endl;
 }
 
 /*____________________________________________________________ */
@@ -165,7 +148,6 @@ ArbolGeneral<T>::ArbolGeneral(const T& e)
 	laraiz->izqda =         //ni hijo izquierda
 	laraiz->drcha = 0;      //ni hermano derecha.
 	laraiz->etiqueta = e;   //Asignamos valor a la etiqueta de la raíz
-	//cout << "AQUI T!!" << endl;
 }
 
 /*____________________________________________________________ */
@@ -176,8 +158,6 @@ ArbolGeneral<T>::ArbolGeneral (const ArbolGeneral<T>& v)
 	copiar (laraiz,v.laraiz); //Llamamos a copiar desde la raíz
 	if (laraiz!=0)            //Si no es el árbol vacío
 		laraiz->padre= 0;       //actualizamos el padre
-
-		//cout << "AQUI copia!!" << endl;
 }
 
 /*____________________________________________________________ */
@@ -198,7 +178,6 @@ ArbolGeneral<T>::operator = (const ArbolGeneral<T>&v){
 		if (laraiz!=0)            //Si no es el árbol vacío
 			laraiz->padre= 0;       //actualizamos el padre
 	}
-	//cout << "AQUI asig!!" << endl;
 	return *this; //Devolvemos *this para permitir encadenamientos (a=b=c)
 }
 
@@ -279,13 +258,6 @@ void ArbolGeneral<T>::asignar_subarbol(const ArbolGeneral<T>& orig,
 template <class T>
 void ArbolGeneral<T>::podar_hijomasizquierda(Nodo n, ArbolGeneral<T>& dest){
 	assert(n!=0);             //El nodo no debe ser nulo
-	// destruir(dest.laraiz);    //Destruimos el árbol destino
-	// dest.laraiz=n->izqda;     //Copia el hijo izquierda de n en la raíz de dest
-	// if (dest.laraiz!=0) {     //Si el subárbol copiado no es vacío,
-	// 	dest.laraiz->padre=0;   //actualizamos el padre
-	// 	n->izqda=0;             //y actualizamos el hijo a la izquierda
-	// }
-
 	Nodo *res = 0;
 	if (n->izqda!=0)
 	{
@@ -310,140 +282,19 @@ void ArbolGeneral<T>::podar_hermanoderecha(Nodo n, ArbolGeneral<T>& dest){
 
 /*____________________________________________________________ */
 
-// template <class T>
-// void insertarHijoIzquierda( ArbolGeneral<T>::Nodo p, T valor)
-//  {
-// if  (p==0)
-//  return;
-// if (p->hi != 0)
-//     podar(p->hi);
-// p->hi= new (nothrow)Celda();
-//  p->hi->valor= valor;
-// p->hi->padre= p; // Reasignamos el padre del hijo izq
-// }
-
-
-// insertar_hijomasizquierda(CeldaArbol *T1, CeldaArbol *n, CeldaArbol *& T2)
-// {
-
-//   if (T2!=0)
-//   {
-//     T2->hermderecha = n->hizqda;
-//     T2->padre = n;
-//     n->hizqda = T2;
-//     T2=0; // Dejamos T2 vacio
-
-//   }
-
-// }
-
-
 template <class T>
 void ArbolGeneral<T>::insertar_hijomasizquierda(Nodo n, ArbolGeneral<T>& rama)
 {
 	assert(n!=0);             //El nodo no debe ser nulo
-	// destruir(n->izqda);       //Destruimos el hijo izquierda
-	// n->izqda=rama.laraiz;     //Copia la rama en el hijo izquierda
-	// if (n->izqda!=0) {        //Si la rama copiada no es vacía,
-	// 	n->izqda->padre= n;     //actualizamos el padre
-	// 	rama.laraiz=0;          //y actualizamos la raíz en rama
-	// }
 
-	  if (!rama.empty())
-	  {
-
-
+	if (!rama.empty())
+	{
 		rama.laraiz->drcha = n->izqda;
 		rama.laraiz->padre = n;
 		n->izqda = rama.laraiz;
 		rama.laraiz=0; // Dejamos la rama vacía
 	}
-
-	// if (rama!=0)
-	// {
-		// rama.derecha() = n->izqda;
-		// rama.padre = n;
-		// n->izqda = rama;
-		// rama=0; // Dejamos la rama vacía
-
-
-	// }
-
-
-
-	// cout << n;
-	// return;
-
-
- //  if (!rama.empty())
- //  {
- //  	Nodo nuevo(rama.laraiz);
- //  	nuevo->izqda = (rama.laraiz)->izqda ;
-
- //  	Nodo aux=rama.laraiz->izqda;
- //  	while(aux!=0)
- //  	{
- //  		aux->padre = nuevo;
- //  		aux=aux->drcha;
- //  	}
- //  	//destruir(rama.laraiz);
-
- //  	nuevo->drcha = n->drcha;;
- //  	nuevo->padre = n;
- //  	n->izqda = nuevo;
-
- //  }
-
-
-
-
-	// //rama.drcha = n->izqda;
-	// rama.padre = n;
-	// n->izqda=rama;
-	// rama=0;   // ponemos t2 a cero pues ya lo hemos insertado en el
-	//           // arbol, si lo destruimos, destruimos tambien lo que
-	//           // hemos insertado en el arbol
-
-
-// // Original ArbolBinario.h
-//   assert(n!=0);             //El nodo no debe ser nulo
-//   destruir(n->izqda);       //Destruimos el hijo izquierda
-//   n->izqda=rama.laraiz;     //Copia la rama en el hijo izquierda
-//   if (n->izqda!=0) {        //Si la rama copiada no es vacÌa,
-//     n->izqda->padre= n;     //actualizamos el padre
-//     rama.laraiz=0;          //y actualizamos la raÌz en rama
-//   }
-
-
 }
-
-// // HUETE
-// template <typename T>
-// typename tree<T>::node tree<T>::insert_left(typename tree<T>::node n, tree<T> & rama)
-// {
-//   if (!rama.empty()){
-//   	typename tree<T>::node nuevo(*(rama.laraiz));
-//   	nuevo.left(rama.laraiz.left());
-
-//   	typename tree<T>::node aux=rama.laraiz.left();
-//   	while(!aux.null()){
-//   		aux.parent(nuevo);
-//   		aux=aux.next_sibling();
-//   	}
-//   	rama.laraiz.remove();
-
-//   	nuevo.next_sibling(n.left());
-//   	nuevo.parent(n);
-//   	n.left(nuevo);
-
-//   	return nuevo;
-//   }
-
-//   return typename tree<T>::node();
-// }
-
-
-
 
 /*____________________________________________________________ */
 
@@ -459,30 +310,6 @@ void ArbolGeneral<T>::insertar_hermanoderecha(Nodo n, ArbolGeneral<T>& rama){
 	}
 
 }
-
-// // HUETE
-// template <typename T>
-// typename tree<T>::node tree<T>::insert_right_sibling(typename tree<T>::node n, tree<T> & rama)
-// {
-// 	typename tree<T>::node nuevo;
-// 	if (!rama.empty()){
-// 		nuevo = *(rama.laraiz);
-// 		nuevo.left(rama.laraiz.left());
-
-// 		typename tree<T>::node aux=rama.laraiz.left();
-// 		while(!aux.null()){
-// 			aux.parent(nuevo);
-// 			aux=aux.next_sibling();
-// 		}
-// 		rama.laraiz.remove();
-
-// 		nuevo.next_sibling(n.next_sibling());
-// 		nuevo.parent(n.parent());
-// 		n.next_sibling(nuevo);
-//   	}
-//   	return nuevo;
-// }
-
 
 /*____________________________________________________________ */
 

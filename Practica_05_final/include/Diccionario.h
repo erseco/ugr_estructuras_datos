@@ -31,6 +31,8 @@ using namespace std;
 #define CYAN     "\033[36m"
 #define WHITE    "\033[37m"
 
+#define BOLD 	"\033[1m" // Negrita
+
  struct info
  {
 	char c; ///<< caracter que se almacena en un nodo

@@ -178,8 +178,6 @@ private:
 
 public:
 
-	void ListarPreorden(nodo *t); //BORRAR
-
 	/**
 	* @brief Tipo Nodo
 	*

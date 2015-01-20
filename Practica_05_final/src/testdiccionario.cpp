@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "diccionario.h"
+#include "Diccionario.h"
 
 
 int main(int argc, char * argv[]){
@@ -21,7 +21,7 @@ int main(int argc, char * argv[]){
 	Diccionario D;
 	f>>D;
 	cout<<"Leido el diccionario..."<<endl;
-	// cout<<D;
+	cout<<D;
 
 	int longitud;
 
@@ -38,12 +38,10 @@ int main(int argc, char * argv[]){
 	 cout<<"Dime una palabra: ";
 	 cin>>p;
 
-	 if (D.Esta(p))
-	 {
-			cout << GREEN <<"Sí esa palabra existe" << BLACK << endl;
-	 }
-	 else
-			cout << RED <<"Esa palabra no existe" << BLACK << endl;
+	if (D.Esta(p))
+		cout << GREEN <<"Sí esa palabra existe" << BLACK << endl;
+	else
+		cout << RED <<"Esa palabra no existe" << BLACK << endl;
 
 }
 

@@ -92,7 +92,7 @@ int main(int argc, char * argv[])
 	char type;
 	do
 	{
-		cout << "Las letras son:\t";
+		cout << "Las letras son:\t" << MAGENTA << BOLD;
 		srand(time(0));            // Inicialización del generador de números pseudoaleatorios
 		vector<Letra> letras;
 
@@ -110,7 +110,7 @@ int main(int argc, char * argv[])
 
 
 		}
-		cout << endl;
+		cout << BLACK << endl;
 
 
 		// letras.clear();
@@ -136,57 +136,59 @@ int main(int argc, char * argv[])
 			palabra.push_back(tolower(*l));
 		}
 
-		sort(palabra.begin(), palabra.end());
+		// sort(palabra.begin(), palabra.end());
 
 
 
+		bool ilegal = false;
 		string solucion_usuario;
-		cout << "Dime tu solucion:";
-		cin >> solucion_usuario;
-
-		if (solucion_usuario.size() > numero_letras)
-			cout << RED <<"TRAMPOSO!! La palabra introducida es mayor a la cantidad de letras proporcionadas" << BLACK << endl;
-		else
+		do
 		{
+			ilegal = false;
 
-			bool ilegal = false;
-			for (int i=0; i<solucion_usuario.size(); i++)
+			cout << "Dime tu solucion:";
+			cin >> solucion_usuario;
+			if (solucion_usuario.size() > numero_letras)
 			{
-				char letra = solucion_usuario[i];
-				if (palabra.find(letra) == string::npos)
+				cout << RED <<"TRAMPOSO!! La palabra introducida es mayor a la cantidad de letras proporcionadas" << BLACK << endl;
+				ilegal = true;
+			}
+			else
+			{
+				for (int i=0; !ilegal && i<solucion_usuario.size(); i++)
 				{
-					ilegal = true;
+					char letra = solucion_usuario[i];
+					// Comprobamos si la letra no está
+					if (palabra.find(letra) == string::npos)
+					{
+						cout << RED <<"TRAMPOSO!! Has usado letras fuera de la secuencia" << BLACK << endl;
+						ilegal = true;
+					}
 				}
+
+
 			}
 
-			if (ilegal)
-				cout << RED <<"TRAMPOSO!! Has usado letras fuera de la secuencia" << BLACK << endl;
+		} while (ilegal);
 
-			else if (!diccionario.Esta(solucion_usuario))
-				cout << RED <<"Esa palabra no existe" << BLACK << endl;
-			else
-				cout << BLUE << solucion_usuario << "\tPuntuacion: " << conjunto.puntuacion(solucion_usuario) << BLACK << endl;
+		// Por si solo queremos sacar las de mayor longitud QUTAR
+		int hasta = 0;
 
+		// Comprobamos si hay soluciones
+		if (!diccionario.Esta(solucion_usuario))
+			cout << RED <<"Esa palabra no existe" << BLACK << endl;
+		else
+		{
+			cout << BLUE << solucion_usuario << "\tPuntuacion: " << conjunto.puntuacion(solucion_usuario) << BLACK << endl;
+			hasta = solucion_usuario.size() -1;
 		}
 
 
 		// BUSCAMOS LAS LETRAS
 
-		// Basado en la explicacion de pedro reina
-		// La idea clave es esta: se parte de un diccionario con las palabras válidas.
-		// Se eligen las de nueve letras (luego de ocho, siete, etc.).
-		// Se colocan por orden alfabético las letras de cada palabra (por ejemplo, de la palabra "nutritivo" obtenemos "iinorttuv").
-		// Se guardan todas las palabras clasificadas y normales; valdría un archivo de texto, aunque es más cómodo usar un gestor
-		// de bases de datos. Ahora nos dan nueve letras para buscar una palabra con ellas. Colocamos las letras por orden alfabético
-		// y buscamos en la lista si aparece esa combinación. Si aparece, damos las palabras de la que partió.
-		// Por ejemplo, a partir de las letras "ntviriuto" obtenemos "iinorttuv", que tiene como palabra asociada "nutritivo".
-
-
-
 		set<string, MyStringLengthCompare> encontradas;
 
 		cout << "Mis soluciones son:" << endl;
-		bool alguna = false;
 
 		for (int i=numero_letras; i>0; i--)
 		{
@@ -198,45 +200,22 @@ int main(int argc, char * argv[])
 
 				string palabra_vector = *it;
 
-				sort(palabra.begin(), palabra.end());
-				sort(palabra_vector.begin(), palabra_vector.end());
+				bool salir = false;
+				do
+				{
 
-
-				// if(palabra.substr(0, palabra_vector.size()) == palabra_vector)
-				// {
-				// 	alguna = true;
-				// 	//cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
-				// 	cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
-
-
-
-				// }
-				// // else if ((*it).size() == 2)
-				// // {
-				// // 	cout << RED << *it << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
-				// // }
-				// else
-				// {
-					do
+					if (palabra.compare(0,palabra_vector.size(), palabra_vector) == 0)
+					// if(palabra.substr(0, palabra_vector.size()) == palabra_vector)
 					{
+						//cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
+						// cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
+						encontradas.insert(*it);
+						salir = true;
+					}
 
 
-						if(palabra.substr(0, palabra_vector.size()) == palabra_vector)
-						{
-							alguna = true;
-							//cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
-							// cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << " - " << palabra_vector << " palabra: " << palabra << BLACK << endl;
+			  	} while (!salir && next_permutation(palabra.begin(), palabra.end()) );
 
-
-							encontradas.insert(*it);
-
-
-						}
-
-
-				  	} while (next_permutation(palabra.begin(), palabra.end()) );
-
-				// }
 
 
 			}
@@ -249,18 +228,11 @@ int main(int argc, char * argv[])
 			for (;it!=encontradas.end();++it)
 				cout << GREEN << *it << "\tPuntuacion: "  << conjunto.puntuacion(*it) << BLACK << endl;
 
-
-
 		}
 		else
 			cout << RED <<"No se encontró ninguna palabra con esas letras" << BLACK << endl;
 
-		// if (!alguna)
-		// 	cout << RED <<"No se encontró ninguna palabra con esas letras" << BLACK << endl;
 		// FIN DE LA BUSQUEDA DE LETRAS
-
-
-
 
 
 		if (strcmp(argv[4], "L") == 0)
@@ -282,8 +254,8 @@ int main(int argc, char * argv[])
 		cout << "¿Quieres seguir jugando[S/N]?";
 		cin >> type;
 		cout << endl; // metemos un salto
-	}
-	while (!cin.fail()  && tolower(type) !='n');
+
+	} while (!cin.fail()  && tolower(type) !='n');
 
 
 

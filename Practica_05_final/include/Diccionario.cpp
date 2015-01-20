@@ -10,9 +10,6 @@
  *
  ******************************************************************************/
 
-#include <stdexcept>      // std::out_of_range
-
-
 Diccionario::Diccionario()
 {
 	// Creamos el nodo que sera el raiz, le ponemos '*' por poner algo
@@ -57,37 +54,6 @@ vector<string> Diccionario::PalabrasLongitud(int longitud)
 
 
 	iterator it_dic = begin();
-
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// ++it_dic;
-	// cout << "Palabra: " << *it_dic << endl;
-	// if (begin() != begin())
-	// 	cout << "distinto" << endl;
-	// else
-	// 	cout << "igulaes" << endl;
-
 
 	for (it_dic = begin(); it_dic != end(); ++it_dic)
 	{
@@ -253,51 +219,25 @@ istream& operator>> (istream & is,Diccionario &D)
 	// Vamos obteniendo palabras
 	while (getline(is, palabra))
 	{
-
-
-
-		//if (!D.Esta(palabra))
-			//D.Agrega(palabra);
-			D.insertar_cadena(palabra,0, D.datos.raiz());
-
+		D.insertar_cadena(palabra,0, D.datos.raiz());
 	}
+
 	// Devolvemos la referencia al flujo
 	return is;
 }
 
-ostream & operator<<(ostream & os, const Diccionario &D)
+ostream & operator<<(ostream & os, Diccionario &D)
 {
+	Diccionario::iterator it = D.begin();
 
-
-	//ArbolGeneral<info>::iter_preorden it;
-
-	// for (it=D.datos.begin(); it!= D.datos.end(); ++it)
-	// {
-	//     //os << (*it)->c << " \\";
-	// }
-
+	for (; it!=D.end(); ++it)
+	{
+		os << (*it) << endl;
+	}
 
 	// Devolvemos la referencia al flujo
 	return os;
 }
-
-
-	// class iterator
-	// {
-	// private:
-	//     ArbolGeneral<info>::iter_preorden it;
-	//     string cad; //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
-	// public:
-
-	//     iterator();
-
-	//     string operator *();
-	//     iterator & operator ++();
-	//     bool operator ==(const iterator &i);
-	//     bool operator !=(const iterator &i);
-	//     friend class Diccionario;
-	// };
-
 
 Diccionario::iterator::iterator()
 {
@@ -305,32 +245,16 @@ Diccionario::iterator::iterator()
 	it = arbol.end();
 	cad = "";  //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
 	level = 0;
-
 }
 
 Diccionario::iterator::iterator(const Diccionario::iterator & i) :  arbol(i.arbol), it(i.it), cad(i.cad), level(i.level) {}
 
-Diccionario::iterator::iterator(Diccionario dic) //: arbol(&dic.datos), it(dic.datos.begin()), cad("")
+Diccionario::iterator::iterator(Diccionario dic)
 {
-
 	arbol = dic.datos;
 	it =  arbol.begin();
-	//++it;
 	cad = "";
 	level = 0;
-
-
-	// cout << "Llamada consstr" << endl;
-
-	// ArbolGeneral<info>::iter_preorden ib;
-
-	// for (ib = arbol.begin(); ib!=arbol.end(); ++ib)
-	// {
-
-	// 	cout << "Letra: " << (*ib).c << " nivel: " << ib.getlevel() << " final: " << (*ib).final << endl;
-	// }
-
-
 }
 
 string Diccionario::iterator::operator*()
@@ -341,194 +265,67 @@ string Diccionario::iterator::operator*()
 Diccionario::iterator & Diccionario::iterator::operator ++()
 {
 
-
-	// cout << "Llamada incremento" << endl;
-
-	// ArbolGeneral<info>::iter_preorden ib;
-	// for (ib = arbol.begin(); ib!=arbol.end(); ++ib)
-	// {
-	// 	// cout << "Letra: " << (*ib).c << " nivel: " << ib.getlevel() << " final: " << (*ib).final << endl;
-	// 	cout << (*ib).c;
-
-	// }
-	// cout << endl;
-
-	// return *this;
-try {
-
-
-	if (it==arbol.end())
+	if ((*it).final)
 	{
-	    cout << "LLega al final" << endl;
-		arbol = ArbolGeneral<info>();
-		it = arbol.begin();
-		cad = "";  //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
-		level = 0;
-	}
-	else
-	{
+		++it;
 
-		if ((*it).final)
+		int level_actual = it.getlevel();
+
+		if (level_actual == 0)
 		{
-			++it;
 
-			int level_actual = it.getlevel();
+			// cout << "FIN" << endl;
+		    //cout << "LLega al final trycatch" << endl;
+			arbol = ArbolGeneral<info>();
+			it = arbol.begin();
+			cad = "";  //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
+			level = 0;
 
+			return *this;
 
-
-			if (level_actual > level)
-			{
-				cad.push_back((*it).c);
-				level++;
-
-				//cout << "final - incremento nivel: " << level << endl;
-
-			}
-			else if (level_actual <= level)
-			{
-
-				int diff =  level - level_actual;
-
-				//cout << "final - diferencia: " << diff << endl;
-				// cad.pop(diff);
-
-				cad.erase(cad.size() - diff -1);
-				cad.push_back((*it).c);
-
-				level = level_actual;
-
-			}
 
 		}
+		if (level_actual > level)
+		{
+			cad.push_back((*it).c);
+			level++;
 
-		//char letra = (*it).c;
-		// cout << "l:" << *it << " es final: " << (*it).final << endl;
-		// ++it;
+			//cout << "final - incremento nivel: " << level << endl;
 
-		//cout << "l:" << *it << " es final: " << (*it).final << endl;
-
-		while (!(*it).final)
+		}
+		else if (level_actual <= level)
 		{
 
-			if (it==arbol.end())
-			{
-			    cout << "LLega al final" << endl;
-				arbol = ArbolGeneral<info>();
-				it = arbol.begin();
-				cad = "";  //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
-				level = 0;
-				return *this;
-			}
+			int diff =  level - level_actual;
 
-			++it;
+			// Si da un numero negativo es porque estamos en el final del arbol
+			int caracteres_a_borrar = cad.size() - diff -1;
 
-			int level_actual = it.getlevel();
+			cad.erase(caracteres_a_borrar);
 
-			if (level_actual > level)
-			{
-				cad.push_back((*it).c);
-				level++;
+			cad.push_back((*it).c);
 
-				//cout << "incremento nivel: " << level << endl;
-
-			}
-			else if (level_actual < level)
-			{
-
-				int diff =  level - level_actual;
-
-				cout << "diferencia: " << diff << endl;
-				// cad.pop(diff);
-
-				cad.erase(cad.size() - diff -2);
-				cad.push_back((*it).c);
-
-				level = level_actual;
-
-			}
-
-			// char letra = (*it).c;
-
-			// //cout << "Letrilla:" << letra << "." << endl;
-
-			//cout << *it << endl;
-
-
-
-			//cout << "incremento" << endl;
-
+			level = level_actual;
 
 		}
 
 	}
 
-}
- catch (const out_of_range& oor) {
+	while (!(*it).final)
+	{
+		++it;
 
-	    //cout << "LLega al final trycatch" << endl;
-		arbol = ArbolGeneral<info>();
-		it = arbol.begin();
-		cad = "";  //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
-		level = 0;
+		int level_actual = it.getlevel();
 
- }
+		if (level_actual > level)
+		{
+			cad.push_back((*it).c);
+			level++;
 
-	// ArbolGeneral<info>::iter_preorden ib;
-	// for (ib = arbol->begin(); ib!=arbol->end(); ++ib)
-	// {
-	// 	cout << "Letra: " << (*ib).c << " nivel: " << ib.getlevel() << endl;
-	// }
+			//cout << "incremento nivel: " << level << endl;
+		}
 
-
-
-	// if (it==0)
-	// {
-	// 	cout << "es 0" << endl;
-	// }
-
-
-	// while (it!=arbol->end() || !(*it).final)
-	// {
-
-	// 	char letra = (*it).c;
-
-	// 	//cout << "Letrilla:" << letra << "." << endl;
-
-	// 	cad.push_back(letra);
-
-	// 	//cout << "incremento" << endl;
-	// 	++it;
-
-	// }
-
-
-
-	// else
-	// {
-
-
-	// // ArbolGeneral<info>::iter_preorden ib;
-	// // for (ib = arbol->begin(); ib!=arbol->end(); ++ib)
-	// // {
-	// // 	cout << "Letra: " << (*ib).c << " nivel: " << ib.getlevel() << endl;
-	// // }
-
-
-	// 	char letra = (*it).c;
-	// 	cout << "Letrilla:" << letra << "." << endl;
-	// 	++it;
-	// }
-
-
-
-	//}
-	// it++
-
-	// cad.push_back(())
-
-
-
-	// NOTA: FALTA EL INCREMENTO DE CAD!!!
+	}
 
 	return *this;
 }
@@ -547,7 +344,6 @@ bool Diccionario::iterator::operator !=(const Diccionario::iterator &i)
 ostream & Diccionario::iterator::operator<<(ostream & os)
 {
 	os << cad;
-
 	return os;
 }
 
@@ -558,9 +354,6 @@ Diccionario::iterator Diccionario::begin()
 
 Diccionario::iterator Diccionario::end()
 {
-
-	// cout << "FIN DICCIONARIO (IT)" << endl;
-
 	return iterator();
 }
 

@@ -28,7 +28,7 @@
 *.exe
 *.out
 *.app
-<<<<<<< HEAD
+**/bin/
 
 # Ficheros de Mac
 .DS_Store

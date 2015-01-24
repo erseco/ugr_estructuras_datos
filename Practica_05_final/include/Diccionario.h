@@ -21,48 +21,69 @@
 
 using namespace std;
 
- struct info
- {
+/**
+ * @brief Estructura que almacenaremso en el arbol
+ *
+ */
+struct info
+{
+	/**
+	 * Guardaremos el caracter de la palabra en un char
+	 * y una bandera final que estará a true si desde el primer nivel
+	 * hasta el nodo que contiene la bandera se forma una palabra
+	 *
+	 */
 	char c; ///<< caracter que se almacena en un nodo
 	bool final; ///< nos indica si es final o no de palabra
-	info()
-	{
-		c='\0';
-		final=false;
-	}
+
+	/**
+	 * @brief Constructor sin parametros
+	 */
+	info() : c('\0'), final(false) {}
+
+	/**
+	 * @brief Constructor con parametros
+	 *
+	 * @param car char con el caracter a almacenar
+	 * @param f booleano que indica si es la letra final de la palabra
+	 */
 	info(char car, bool f) : c(car), final(f) {}
 
-	// Constructor de copia
+	/**
+	 * @brief Constructor de copia
+	 */
 	info(const info & i) : c(i.c), final(i.final) {}
 
-	// info operator= (info i)
-	// {
-	// 	info inf;
-	// 	inf.c = i.c;
-	// 	inf.final = i.final;
-	// 	return inf;
-	// }
-
-	// char operator*()
-	// {
-	// 	return c;
-	// }
-
+	/**
+	 * @brief Operador de salida
+	 */
 	friend ostream & operator<<(ostream & os, const info &i)
 	{
 		os << i.c;
-
 		return os;
 	}
 };
 
+/**
+ * @brief TDA Diccionario
+ * @details Almacena las palabras de un fichero de texto e itera sobre ellas
+ *
+ */
 class Diccionario
 {
 
 private:
 
+	/**
+	 * La representación de los datos del diccionario es un ArbolGeneral de elementos
+	 * de tipo info (que a su vez son un char y un booleano que indica si es final de palabra)
+	 *
+	 * Dicha representación hace que las palabras ocupen menos en memoria, la cual
+	 * es la única ventaja real a utilizar otros sistemas menos complejos como podrian ser
+	 * vectores de cadenas
+	 *
+	 */
 	ArbolGeneral<info> datos;
-	//tree<info> datos;
 
 public:
 
@@ -129,31 +150,31 @@ public:
 	**/
 	friend ostream & operator<<(ostream & os, const Diccionario &D);
 
-
+	/**
+	 * @brief Clase iteradora del diccioanrio
+	 *
+	 */
 	class iterator
 	{
 	private:
+
+		/**
+		 *  representacion de los datos del iterador del diccionario
+		 *  nos guardamos una copia del arbol y un iterador del mismo
+		 *  asi como la cadena que iremos construyendo y el nivel
+		 */
 		ArbolGeneral<info> arbol;
 		ArbolGeneral<info>::iter_preorden it;
 		string cad; //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
 		int level;
+
 	public:
 
+		/**
+		 * @brief Constructor sin parametros
+		 */
 		iterator();
 		iterator(Diccionario diccionario);
-
-
-		// Constructor de copia
-		iterator(const iterator & i);
-
-
-		// Operador de asignacion
-		iterator operator= (iterator i)
-		{
-			iterator ite(i);
-			return ite;
-		}
-
 
 		string operator *();
 		iterator & operator ++();

@@ -20,6 +20,11 @@
 
 using namespace std;
 
+/**
+ * @brief TDA ConjuntoLetras
+ * @details se llena desde un fichero
+ *
+ */
 class ConjuntoLetras
 {
 
@@ -27,8 +32,9 @@ private:
 
  	/**
  	 * @brief Representación del conjunto de letras (un set)
+ 	 * le pasamos un functor de comparación definido en letra
  	 */
- 	set<Letra, cmp> abecedario;
+ 	set<Letra, Letra::cmp> abecedario;
 
 public:
 
@@ -54,23 +60,33 @@ public:
 		return *it;
     };
 
+    /**
+     * @brief Obtiene la puntuación de una palabra
+     *
+     * @param palabra le pasamos la palabra como string
+     * @return Un entero con la suma de las puntuaciones de las letras de la palabra
+     */
     int puntuacion(string palabra)
     {
     	int puntos = 0;
+
+    	// Para cada letra en la palabra...
     	for (int i=0;i<palabra.size(); i++)
     	{
     		bool salir = false;
-    		set<Letra>::iterator it = abecedario.begin();
-    		for (; !salir && it!=abecedario.end(); ++it )
+
+    		// ...la busca en el conjunto...
+    		for (set<Letra>::iterator it = abecedario.begin(); !salir && it!=abecedario.end(); ++it )
     		{
     			Letra l = *it;
+    			// ... y si coincide...
     			if (palabra[i] == tolower(*l))
     			{
+    				// ...incrementa el contador de puntos
 					puntos  +=  it->getPuntos();
 					salir = true;
 	    		}
     		}
-
     	}
 
 		return puntos;

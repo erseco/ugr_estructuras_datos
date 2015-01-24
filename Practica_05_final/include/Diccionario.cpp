@@ -50,11 +50,17 @@ vector<string> Diccionario::PalabrasLongitud(int longitud)
 
 }
 
+/**
+ * @brief Implementación del metodo buscar
+ * @details Notese que se ha implementado de dos formas diferentes
+ *
+ * @param palabra palabra a buscar
+ * @return true si la palabra está en el diccionario
+ */
 bool Diccionario::Esta(string palabra)
 {
 
 	// METODO 2 (iteradores) (mas sencillo)
-
 	for (iterator it_dic = begin(); it_dic != end(); ++it_dic)
 	{
 		string cad = *it_dic;
@@ -65,13 +71,14 @@ bool Diccionario::Esta(string palabra)
 
 	return false;
 
-
-
-
+	// NOTA!! Se ha dejado la primera implementación del metodo, pero nunca alcanzará
+	// esta sección ya que siempre saldrá por el return superior
+	// la implemtacion de abajo está solo con fines comparativos de la diferencia
+	// entre usar iteradores o usar el arbol a pelo
+	//
 	// MOTODO 1 (buscando) (mas engorroso)
-
 	// recorremos las letras de origen
-
+	//
 	//     para cada Letra
 	//         esta en el iterador actual?
 	//             si
@@ -82,59 +89,41 @@ bool Diccionario::Esta(string palabra)
 	//                         vamos al hermano
 	//                     no
 	//                         la letra no está
-
-
+	//
 	//     una vez finalizadas las letras, si en la ultima pone final es que está
-
 	ArbolGeneral<info>::iter_preorden it = datos.begin();
-
 	// Incrementamos el iterador para que se vaya al primer nivel
 	++it;
-
 	for (int i=0; i < palabra.size(); i++)
 	{
 		char letra = palabra[i];
-		ArbolGeneral<info>::Nodo n = &it;
-
-		// cout << "L:" << letra << endl;
-
+		ArbolGeneral<info>::Nodo n = &it; // VER NOTA!!!
 		bool salir = false;
-
 		while (!salir && n!=0)
 		{
-
-			// cout << "dep---:" << letra << " it:" << (*it).c << endl;
-
-			if ((*it).c == letra)
+			if ((*it).c == letra) // VER NOTA!!!
 			{
-
-				if ((*it).final && i == palabra.size()-1)
+				if ((*it).final && i == palabra.size()-1) // VER NOTA!!!
 				    return true;
 				else
 				{
 				    ++it;
-				    salir = true;
+				    salir = true; // VER NOTA!!!
 				}
-
 			}
 			else if (datos.hermanoderecha(&it) == 0)
 			{
-				return false;
+				return false; // VER NOTA!!!
 			}
 			else
 			{
 				n = datos.hermanoderecha(&it);
 				it = ArbolGeneral<info>::iter_preorden(n);
 			}
-
-
-
 		}
 
 	}
-
-	return false;
-
+	return false; // VER NOTA!!!
 }
 
 void Diccionario::insertar_cadena( string palabra, int i, ArbolGeneral<info>::Nodo n)
@@ -222,8 +211,6 @@ Diccionario::iterator::iterator()
 	level = 0;
 }
 
-Diccionario::iterator::iterator(const Diccionario::iterator & i) :  arbol(i.arbol), it(i.it), cad(i.cad), level(i.level) {}
-
 Diccionario::iterator::iterator(Diccionario dic)
 {
 	arbol = dic.datos;
@@ -246,27 +233,22 @@ Diccionario::iterator & Diccionario::iterator::operator ++()
 
 		int level_actual = it.getlevel();
 
+		// Si el nivel es 0 es que estamos al final del arbol (ha vuelto a a la raiz)
 		if (level_actual == 0)
 		{
-
-			// cout << "FIN" << endl;
-		    //cout << "LLega al final trycatch" << endl;
+			// ...ponemos el iterador en situacion de .end()
 			arbol = ArbolGeneral<info>();
 			it = arbol.begin();
 			cad = "";  //mantiene los caracteres desde el nivel 1 hasta donde se encuentra it.
 			level = 0;
 
 			return *this;
-
-
 		}
+
 		if (level_actual > level)
 		{
 			cad.push_back((*it).c);
 			level++;
-
-			//cout << "final - incremento nivel: " << level << endl;
-
 		}
 		else if (level_actual <= level)
 		{
@@ -296,8 +278,6 @@ Diccionario::iterator & Diccionario::iterator::operator ++()
 		{
 			cad.push_back((*it).c);
 			level++;
-
-			//cout << "incremento nivel: " << level << endl;
 		}
 
 	}

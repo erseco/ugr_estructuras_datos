@@ -22,6 +22,11 @@
 
 using namespace std;
 
+/**
+ * @brief TDA BolsaLetras
+ * @details Almacena las letras repetidas tantas veces como indica su vaor en repeticiones
+ *
+ */
 class BolsaLetras
 {
 
@@ -29,8 +34,9 @@ private:
 
  	/**
  	 * @brief Representación de la bolsa de letras (un multiset)
+ 	 * le pasamos un functor de comparación definido en letra
  	 */
- 	multiset<Letra, cmp> bolsa;
+ 	multiset<Letra, Letra::cmp> bolsa;
 
 public:
 
@@ -83,16 +89,13 @@ public:
 		// Recorremos las letras...
 		for (int i=0; i<cl.size(); i++)
 		{
-
 			Letra letra = cl[i];
 
 			// ...y creamos tantas letras en la bolsa como cantidad tenga cada letra
 			for (int j=0; j<&letra; j++)
 			{
 				bl.bolsa.insert(letra);
-
 			}
-
 		}
 
 		return cl;

@@ -12,11 +12,11 @@ Consta de 3 módulos practicos:
 
 3. T.D.A. Lineales
 
-4. T.D.A. Abstractos e Iteradores
+4. STL e Iteradores
 
-5. Árboles
+5. Árboles (Práctica final)
 
-NOTA: Estas prácticas compilan tanto en Linux como en MACOSX
+NOTA: Estas prácticas funcionan tanto en Linux como en MACOSX
 
 ---
 Si quieres contactar conmigo: http://www.ernesto.es
